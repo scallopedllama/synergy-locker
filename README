@@ -1,0 +1,6 @@
+synergy-locker is a dead-simple python script that
+listens for the org.freedesktop.Screensaver ActiveChanged
+signal to send a command to secondary device via ssh
+that will either start or stop the lock screen.
+
+MIT License

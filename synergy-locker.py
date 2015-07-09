@@ -4,11 +4,15 @@ import gobject
 import dbus
 import dbus.mainloop.glib
 
+from subprocess import call
+
 def activeChangedHandler(active):
 	if (active):
-		print("Screen Locked")
+		print("Locking other screen")
+		call(["ssh", "-n", "-f", "3rd_screen", "DISPLAY=:0.0", "nohup", "/usr/bin/slock", "2>&1", ">", "/dev/null", "<", "/dev/null", "&"])
 	else:
-		print("Screen Unlocked")
+		print("Unlocking other screen")
+		call(["ssh", "3rd_screen", "/usr/bin/killall", "slock"])
 
 if __name__ == '__main__':
 	

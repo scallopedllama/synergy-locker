@@ -9,12 +9,12 @@ from subprocess import call
 def activeChangedHandler(active):
 	if (active):
 		print("Locking other screen")
-		call(["ssh", "-n", "-f", "3rd_screen", "DISPLAY=:0.0", "nohup", "/usr/bin/slock", "2>&1", ">", "/dev/null", "<", "/dev/null", "&"])
-		call(["ssh", "-n", "-f", "3rd_screen", "DISPLAY=:0.0", "nohup", "xset", "dpms", "force", "off", "2>&1", ">", "/dev/null", "<", "/dev/null", "&"])
+		call(["ssh", "-n", "-f", "3rd_screen", "/usr/bin/loginctl list-sessions | grep seat | awk '{print $1}' | xargs -l1 loginctl lock-session"])
+		call(["ssh", "-n", "-f", "3rd_screen", "DISPLAY=:0.0 xset dpms force off"])
 	else:
 		print("Unlocking other screen")
-		call(["ssh", "3rd_screen", "/usr/bin/killall", "slock"])
-		call(["ssh", "-n", "-f", "3rd_screen", "DISPLAY=:0.0", "nohup", "xset", "dpms", "force", "on", "2>&1", ">", "/dev/null", "<", "/dev/null", "&"])
+		call(["ssh", "-n", "-f", "3rd_screen", "/usr/bin/loginctl list-sessions | grep seat | awk '{print $1}' | xargs -l1 loginctl unlock-session"])
+		call(["ssh", "-n", "-f", "3rd_screen", "DISPLAY=:0.0 xset dpms force on"])
 
 if __name__ == '__main__':
 	
